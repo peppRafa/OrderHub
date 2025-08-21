@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: orderhub-restaurant-saas
+    env: node
+    plan: free
+    rootDir: restaurant-saas
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      - key: NEXTAUTH_URL
+        sync: false
+    domains:
+      - orderhub-restaurant.onrender.com
+    
+    # Auto-deploy settings
+    autoDeploy: true
+    branch: main
+    
+    # Health check settings
+    healthCheckPath: /
+    
+    # Build settings
+    buildFilter:
+      paths:
+        - src/**
+        - public/**
+        - package.json
+        - package-lock.json
+        - next.config.ts
+        - tailwind.config.js
+        - tsconfig.json
